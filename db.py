@@ -6,11 +6,9 @@ from sqlalchemy.orm import sessionmaker
 import pymysql
 pymysql.install_as_MySQLdb()
 
-from base import Base
-
 class Db:
-    db_log = ""
-    db_pass = ""
+    db_log = "root"
+    db_pass = "Worldmw1337"
     db_url = "mysql://%s:%s@localhost/esystem" % (db_log, db_pass)
     def __init__(self, Base):
         self.Base = Base

@@ -1,7 +1,6 @@
 # sql get characteristic as user_parameter
-from data_tables import exercise
-from data_tables.characteristic import Characteristic
-from data_tables.user_data import UserData
+from characteristic import Characteristic
+from user_data import UserData
 
 class UserInterface():
     def __init__(self, session, user_id):

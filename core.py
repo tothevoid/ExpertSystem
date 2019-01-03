@@ -1,16 +1,16 @@
 from ui import UserInterface
-from data_tables.base import Base
-from data_tables.db import Db
+from base import Base
+from db import Db
 
-from data_tables.characteristic import Characteristic
-from data_tables.muscle_group import MuscleGroup
-from data_tables.node import Node
-from data_tables.exercise import Exercise
-from data_tables.node_rule import NodeRule
-from data_tables.relation import Relation
-from data_tables.rule import Rule
-from data_tables.user_data import UserData
-from data_tables.user import User
+from characteristic import Characteristic
+from muscle_group import MuscleGroup
+from node import Node
+from exercise import Exercise
+from node_rule import NodeRule
+from relation import Relation
+from rule import Rule
+from user_data import UserData
+from user import User
 
 class ESystem():
     def __init__(self):
