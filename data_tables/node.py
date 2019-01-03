@@ -1,7 +1,7 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from base import Base
 
-Base = declarative_base()
 class Node(Base):
     __tablename__ = 'node'
     id = Column(Integer, primary_key=True)

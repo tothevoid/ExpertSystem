@@ -1,7 +1,7 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from base import Base
 
-Base = declarative_base()
 class Rule(Base):
     __tablename__ = 'rule'
     id = Column(Integer, primary_key=True)
