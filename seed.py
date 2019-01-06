@@ -30,8 +30,10 @@ def import_data(table, filepath):
         db.session.commit()
 
 def fill_characteristics():
+    """Нужно указать путь к csv файлу"""
     filepath = 'data\\fill_characteristics.csv'
-    import_data(Characteristic,filepath)
+    import_data(Characteristic,filepath)    
+    print("Import characteristics success!")
     # print(self.session.query(Characteristic).filter_by(name='Вес').count())
 
 db = Db(Base)
