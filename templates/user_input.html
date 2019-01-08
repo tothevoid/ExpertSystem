@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <form id="form">
+            <div class="field">
+                <label class="label required">Рост</label>
+                <input required name="height" type="text"/>
+            </div>
+            <div class="field">
+                <label class="label required">Вес</label>
+                <input required name="weight" type="text"/>
+            </div>
+            <div class="warning">
+                    <p>Не используйте экспертную систему если у вас:</p>
+                    <ul>
+                        <li>Вес больше 150</li>
+                        <li>Проблемы с позвоночником</li>
+                        <li>Что-то еще</li>
+                    </ul>
+                    <p>Воспользуйтесь консультацией врача</p>
+            </div>
+            <button class="btn-submit">Отправить</button>
+        </form>
+    </div>
+</body>
+</html>

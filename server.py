@@ -1,5 +1,5 @@
-from flask import Flask, request, send_from_directory, render_template, url_for
-
+from flask import Flask, request, send_from_directory, render_template, url_for, abort
+import json
 app = Flask(__name__,static_url_path='')
 app.config.update(
    TEMPLATES_AUTO_RELOAD = True,
@@ -8,22 +8,26 @@ app.config.update(
 
 @app.route("/")
 def start_page():
+   return render_template('user_input.html')
    # return send_from_directory('static', 'index.html')
-   return render_template('index.html')
-
+  
 def send_nodes():
    pass
 
-def show_user_form():
-   pass
+@app.route("/tree")
+def show_tree():
+   return render_template('tree.html')
 
+@app.route("/get_user_form", methods=['POST'])
 def get_user_form():
-   pass
+   if not request.json:
+      abort(400)
+   print(request.json)
+   return json.dumps(request.json)
 
+@app.route("/show_excercises")
 def show_excercises():
    pass
 
 if __name__ == "__main__":
    app.run()
-   url_for('static', filename='style.css')
-   url_for('static', filename='graph.css')
