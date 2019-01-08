@@ -5,3 +5,4 @@
 * sqlalchemy
 * sqlalchemy_utils
 * pymysql
+* flask (Jinja2, Werkzeug, Virtualenv)
