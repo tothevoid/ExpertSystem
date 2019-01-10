@@ -13,6 +13,14 @@
     <div class="container">
         <form id="form">
             <div class="field">
+                <label class="label">Тип тренеровок</label>
+                <select required name="type">
+                    <option value="1">Сила</option>
+                    <option value="2">Выносливость</option>
+                    <option value="3">Похудение</option>
+                </select>
+            </div>
+            <div class="field">
                 <label class="label required">Рост</label>
                 <input required name="height" type="text"/>
             </div>
@@ -21,13 +29,13 @@
                 <input required name="weight" type="text"/>
             </div>
             <div class="warning">
-                    <p>Не используйте экспертную систему если у вас:</p>
-                    <ul>
-                        <li>Вес больше 150</li>
-                        <li>Проблемы с позвоночником</li>
-                        <li>Что-то еще</li>
-                    </ul>
-                    <p>Воспользуйтесь консультацией врача</p>
+                <p>Не используйте экспертную систему если у вас:</p>
+                <ul>
+                    <li>Вес больше 150</li>
+                    <li>Проблемы с позвоночником</li>
+                    <li>Что-то еще</li>
+                </ul>
+                <p>Воспользуйтесь консультацией врача</p>
             </div>
             <button class="btn-submit">Отправить</button>
         </form>
