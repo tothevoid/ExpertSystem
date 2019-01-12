@@ -9,7 +9,7 @@ class Exercise(Base):
     description = Column(String(200))
     muscle_group = Column(Integer, ForeignKey("muscle_group.id"), nullable=False)
 
-    def __init__(self, name, min_value, max_value):
+    def __init__(self, name, description, muscle_group):
         self.name = name
-        self.min_value = min_value
-        self.max_value = max_value
+        self.description = description
+        self.muscle_group = muscle_group
