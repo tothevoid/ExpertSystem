@@ -1,1 +1,6 @@
 __pycache__
+data/fill_characteristics.txt
+data/fill_exercise.txt
+data/fill_muscle_group.txt
+data/fill_rules.txt
+.vscode/launch.json
