@@ -5,9 +5,8 @@ from base import Base
 class Node(Base):
     __tablename__ = 'node'
     id = Column(Integer, primary_key=True)
-    name = Column(String(200))
     excercise = Column(Integer, ForeignKey("exercise.id"), nullable=False)
     
-    def __init__(self, name, excercise):
-        self.name = name
+    def __init__(self, id, excercise):
+        self.id = id
         self.excercise = excercise

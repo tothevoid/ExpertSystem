@@ -16,5 +16,8 @@ class Db:
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
 
+    def drop_tables(self):
+        self.Base.metadata.drop_all(self.engine)
+
     def create_tables(self):
         self.Base.metadata.create_all(self.engine, checkfirst=True)
