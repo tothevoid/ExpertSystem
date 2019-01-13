@@ -6,8 +6,8 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 class Db:
-    db_log = "root"
-    db_pass = "Worldmw1337"
+    db_log = ""
+    db_pass = ""
     db_url = "mysql://%s:%s@localhost/esystem" % (db_log, db_pass)
     def __init__(self, Base):
         self.Base = Base
