@@ -81,16 +81,17 @@ def getGraphEdgeList(graphNodeList):
                 break
         graphEdgeListResult.append(GraphEdge(parentNode,childNode))
     return graphEdgeListResult
-
-def get_graph(new_edges = None):
+   
+def get_graph(isSample = True):
     global edges
     root = GraphNode(1)
     root.x = startX
     root.y = startY
-    if new_edges == None or len(new_edges) == 0:
+    if isSample:
         edges = get_sample(root)
     else:
-        edges = new_edges
+        nodes = getGraphNodeList()
+        edges = getGraphEdgeList(nodes)
     updated_nodes.append(root)
     calculate_coordinates(root)
     return edges, updated_nodes
@@ -106,17 +107,6 @@ def get_sample(root):
     n9 = GraphNode(9)
     n10 = GraphNode(10)
 
-    # n11 = Node(11)
-    # n12 = Node(12)
-    # n13 = Node(13)
-
-    # n14 = Node(14)
-    # n15 = Node(15)
-    # n16 = Node(16)
-
-    # n17 = Node(16)
-    # n18 = Node(16)
-
     e1 =  GraphEdge(root, n2)
     e2 =  GraphEdge(root, n3)
     e3 =  GraphEdge(n2, n6)
@@ -127,21 +117,7 @@ def get_sample(root):
     e8 =  GraphEdge(n3, n9)
     e9 =  GraphEdge(n5, n10)
 
-    # e10 = Edge(n8, n11)
-    # e11 = Edge(n8, n12)
-    # e12 = Edge(n8, n13)
-
-    # e13 = Edge(n4, n14)
-    # e14 = Edge(n4, n15)
-    # e15 = Edge(n4, n16)
-
-    # e16 = Edge(n16, n17)
-    # e17 = Edge(n16, n18)
-    #,e10,e11,e12,e13,e14,e15,e16,e17
-
-    nodeList = getGraphNodeList()
-    edgeList = getGraphEdgeList(nodeList)
-
+    edgeList = [e1,e2,e3,e4,e5,e6,e7,e8,e9]
     return edgeList
 
 def calculate_coordinates(root):

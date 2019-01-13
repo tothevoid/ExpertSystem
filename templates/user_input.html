@@ -20,14 +20,12 @@
                     <option value="3">Похудение</option>
                 </select>
             </div>
-            <div class="field">
-                <label class="label required">Рост</label>
-                <input required name="height" type="text"/>
-            </div>
-            <div class="field">
-                <label class="label required">Вес</label>
-                <input required name="weight" type="text"/>
-            </div>
+            {% for characteristic in characteristics %}
+                <div class="field">
+                    <label class="label required">{{ characteristic.name }} (от {{ characteristic.min_value }} до {{ characteristic.max_value }})</label>
+                    <input required name="value_{{ characteristic.id }}" type="text"/>
+                </div>
+            {% endfor %}
             <div class="warning">
                 <p>Не используйте экспертную систему если у вас:</p>
                 <ul>

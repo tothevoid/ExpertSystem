@@ -113,7 +113,5 @@ def fill_db():
     fill_rulse()
 
 db = Db(Base)
-
 update_tables()
-
 fill_db()

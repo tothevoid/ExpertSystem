@@ -1,4 +1,3 @@
-#from ui import UserInterface
 from base import Base
 from db import Db
 
@@ -18,9 +17,6 @@ class ESystem():
         self.root_id = 1
         self.user_id = 1
         self.db = Db(Base)
-
-        #self.ui = UserInterface(self.user_id, self.db.session)
-        #self.ui.init_user_input()
         self.get_excercises(self.root_id)
 
     def get_excercises(self,child_id):
@@ -54,6 +50,3 @@ class ESystem():
         elif rule_info.operator == '=' and int(left_operand) == int(right_operand):
             return True
         return False
-
-obj = ESystem()
-print(obj.excersises)
