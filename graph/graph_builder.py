@@ -1,3 +1,15 @@
+from base import Base
+from db import Db
+from sqlalchemy.sql import select
+
+from characteristic import Characteristic
+from muscle_group import MuscleGroup
+from node import Node
+from exercise import Exercise
+from node_rule import NodeRule
+from relation import Relation
+from rule import Rule
+
 #nodes and spaces width
 width = 50
 #layers distance
@@ -10,6 +22,65 @@ totalNodes = 0
 updated_nodes = []
 edges = []
 counter = 0
+
+class GraphNode:
+    def __init__(self, node_id, explanation = '', description = '', rule = ''):
+        self.x = 0
+        self.y = 0
+        self.id = node_id
+        self.explanation = explanation
+        self.description = description
+        self.rule = rule
+
+class GraphEdge:
+    def __init__(self, start_node: GraphNode,end_node: GraphNode):
+        self.start = start_node
+        self.end = end_node    
+
+def getGraphNodeList():
+    """Возвращает список узлов"""
+    db = Db(Base)
+    conn = db.engine.connect()
+    s1 = select([Node.id, Rule.explanation, Exercise.description, Characteristic.name, Rule.operator, Rule.right_operand]).where(Node.excercise == Exercise.id).where(NodeRule.node == Node.id).where(Rule.id == NodeRule.rule).where(Characteristic.id == Rule.left_operand)
+    nodes = conn.execute(s1)
+    graphNodeListFirst = []
+    for row in nodes:
+        graphNodeListFirst.append(GraphNode(row[0],row[1],row[2],"{0} {1} {2}".format(row[3],row[4],row[5])))
+        #print(row[0],row[1],row[2],"{0} {1} {2}".format(row[3],row[4],row[5]))
+    graphNodeListResult = []
+    for node in graphNodeListFirst:
+        nodeInList = False
+        nodeIndexResult = -1
+        for nodeResult in graphNodeListResult:
+            if nodeResult.id == node.id:
+                nodeInList = True
+                nodeIndexResult = nodeResult.id
+                break
+        if nodeInList:
+            graphNodeListResult[nodeIndexResult].explanation += "\n"+node.explanation
+            graphNodeListResult[nodeIndexResult].rule += "\n"+node.rule
+        else:
+            graphNodeListResult.append(node)
+    return graphNodeListResult
+
+def getGraphEdgeList(graphNodeList):
+    db = Db(Base)
+    conn = db.engine.connect()
+    s1 = select([Relation.parent, Relation.child])
+    nodes = conn.execute(s1)
+    graphEdgeListResult = []
+    for row in nodes:
+        parentNode = None
+        childNode = None
+        for node in graphNodeList:
+            if node.id == row[0]:
+                parentNode = node
+            if node.id == row[1]:
+                childNode = node
+            if parentNode != None and childNode != None:
+                break
+        graphEdgeListResult.append(GraphEdge(parentNode,childNode))
+    return graphEdgeListResult
 
 def get_graph(new_edges = None):
     global edges
@@ -25,49 +96,53 @@ def get_graph(new_edges = None):
     return edges, updated_nodes
 
 def get_sample(root):
-	n2 = GraphNode(2)
-	n3 = GraphNode(3)
-	n4 = GraphNode(4)
-	n5 = GraphNode(5)
-	n6 = GraphNode(6)
-	n7 = GraphNode(7)
-	n8 = GraphNode(8)
-	n9 = GraphNode(9)
-	n10 = GraphNode(10)
+    n2 = GraphNode(2)
+    n3 = GraphNode(3)
+    n4 = GraphNode(4)
+    n5 = GraphNode(5)
+    n6 = GraphNode(6)
+    n7 = GraphNode(7)
+    n8 = GraphNode(8)
+    n9 = GraphNode(9)
+    n10 = GraphNode(10)
 
-	# n11 = Node(11)
-	# n12 = Node(12)
-	# n13 = Node(13)
+    # n11 = Node(11)
+    # n12 = Node(12)
+    # n13 = Node(13)
 
-	# n14 = Node(14)
-	# n15 = Node(15)
-	# n16 = Node(16)
+    # n14 = Node(14)
+    # n15 = Node(15)
+    # n16 = Node(16)
 
-	# n17 = Node(16)
-	# n18 = Node(16)
+    # n17 = Node(16)
+    # n18 = Node(16)
 
-	e1 =  GraphEdge(root, n2)
-	e2 =  GraphEdge(root, n3)
-	e3 =  GraphEdge(n2, n6)
-	e4 =  GraphEdge(n2, n7)
-	e5 =  GraphEdge(n3, n4)
-	e6 =  GraphEdge(n3, n5)
-	e7 =  GraphEdge(n3, n8)
-	e8 =  GraphEdge(n3, n9)
-	e9 =  GraphEdge(n5, n10)
+    e1 =  GraphEdge(root, n2)
+    e2 =  GraphEdge(root, n3)
+    e3 =  GraphEdge(n2, n6)
+    e4 =  GraphEdge(n2, n7)
+    e5 =  GraphEdge(n3, n4)
+    e6 =  GraphEdge(n3, n5)
+    e7 =  GraphEdge(n3, n8)
+    e8 =  GraphEdge(n3, n9)
+    e9 =  GraphEdge(n5, n10)
 
-	# e10 = Edge(n8, n11)
-	# e11 = Edge(n8, n12)
-	# e12 = Edge(n8, n13)
+    # e10 = Edge(n8, n11)
+    # e11 = Edge(n8, n12)
+    # e12 = Edge(n8, n13)
 
-	# e13 = Edge(n4, n14)
-	# e14 = Edge(n4, n15)
-	# e15 = Edge(n4, n16)
+    # e13 = Edge(n4, n14)
+    # e14 = Edge(n4, n15)
+    # e15 = Edge(n4, n16)
 
-	# e16 = Edge(n16, n17)
-	# e17 = Edge(n16, n18)
+    # e16 = Edge(n16, n17)
+    # e17 = Edge(n16, n18)
     #,e10,e11,e12,e13,e14,e15,e16,e17
-	return [ e1,e2,e3,e4,e5,e6,e7,e8,e9]
+
+    nodeList = getGraphNodeList()
+    edgeList = getGraphEdgeList(nodeList)
+
+    return edgeList
 
 def calculate_coordinates(root):
     childs = list(filter(lambda x: x.start.id == root.id, edges))
@@ -127,16 +202,4 @@ def get_childs_width(childs):
                 child_width+=1
         width.append(child_width)
     return width
-
-class GraphEdge:
-    def __init__(self,start_node,end_node):
-        self.start = start_node
-        self.end = end_node
-
-class GraphNode:
-    def __init__(self, node_id, description = '', rule = ''):
-        self.x = 0
-        self.y = 0
-        self.id = node_id
-        self.description = description
-        self.rule = rule
+    
