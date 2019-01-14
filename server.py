@@ -73,5 +73,9 @@ def get_excercies():
    output = core.ESystem()
    res = output.excersises
 
+@app.route("/add_node")
+def add_node():
+   return render_template('add_node.html')
+
 if __name__ == "__main__":
    app.run()
