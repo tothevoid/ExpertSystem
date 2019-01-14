@@ -6,9 +6,9 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 class Db:
-    db_log = ""
-    db_pass = ""
-    db_url = "mysql://%s:%s@localhost/esystem" % (db_log, db_pass)
+    db_log = "root"
+    db_pass = "password"
+    db_url = "mysql://%s:%s@localhost/expert_system" % (db_log, db_pass)
     def __init__(self, Base):
         self.Base = Base
         self.engine = create_engine(self.db_url) 

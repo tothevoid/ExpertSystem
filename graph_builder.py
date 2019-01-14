@@ -41,11 +41,12 @@ def getGraphNodeList():
     """Возвращает список узлов"""
     db = Db(Base)
     conn = db.engine.connect()
-    s1 = select([Node.id, Rule.explanation, Exercise.description, Characteristic.name, Rule.operator, Rule.right_operand]).where(Node.excercise == Exercise.id).where(NodeRule.node == Node.id).where(Rule.id == NodeRule.rule).where(Characteristic.id == Rule.left_operand)
+    s1 = select([Node.id])
+    #s1 = select([Node.id, Rule.explanation, Characteristic.name, Rule.operator, Rule.right_operand]).where(NodeRule.node == Node.id).where(Rule.id == NodeRule.rule).where(Characteristic.id == Rule.left_operand)
     nodes = conn.execute(s1)
     graphNodeListFirst = []
     for row in nodes:
-        graphNodeListFirst.append(GraphNode(row[0],row[1],row[2],"{0} {1} {2}".format(row[3],row[4],row[5])))
+        graphNodeListFirst.append(GraphNode(row[0]))
         #print(row[0],row[1],row[2],"{0} {1} {2}".format(row[3],row[4],row[5]))
     graphNodeListResult = []
     for node in graphNodeListFirst:
@@ -71,9 +72,9 @@ def getGraphEdgeList(graphNodeList):
         parentNode = None
         childNode = None
         for node in graphNodeList:
-            if node.id == row[0]:
+            if node.id == row['parent']:
                 parentNode = node
-            if node.id == row[1]:
+            if node.id == row['child']:
                 childNode = node
             if parentNode != None and childNode != None:
                 break
@@ -124,7 +125,7 @@ def calculate_coordinates(root):
     childs = []
     for elm in edges:
        if  elm.start != None and elm.start.id == root.id:
-            childs.append(edges)
+            childs.append(elm)
     if len(childs) == 0:
         return
     childs = [child.end for child in childs]
@@ -181,4 +182,7 @@ def get_childs_width(childs):
                 child_width+=1
         width.append(child_width)
     return width
-    
+
+
+#nodes = getGraphNodeList()
+#edges = getGraphEdgeList(nodes)
