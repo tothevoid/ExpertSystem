@@ -54,12 +54,10 @@ def getGraphNodeList():
         for nodeResult in graphNodeListResult:
             if nodeResult.id == node.id:
                 nodeInList = True
-                nodeIndexResult = nodeResult.id
+                nodeResult.explanation += "\n"+node.explanation                
+                nodeResult.rule += "\n"+node.rule
                 break
-        if nodeInList:
-            graphNodeListResult[nodeIndexResult].explanation += "\n"+node.explanation
-            graphNodeListResult[nodeIndexResult].rule += "\n"+node.rule
-        else:
+        if not nodeInList:
             graphNodeListResult.append(node)
     return graphNodeListResult
 
@@ -121,7 +119,12 @@ def get_sample(root):
     return edgeList
 
 def calculate_coordinates(root):
-    childs = list(filter(lambda x: x.start.id == root.id, edges))
+    if root == None:
+        return
+    childs = []
+    for elm in edges:
+       if  elm.start != None and elm.start.id == root.id:
+            childs.append(edges)
     if len(childs) == 0:
         return
     childs = [child.end for child in childs]

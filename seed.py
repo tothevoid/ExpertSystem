@@ -32,87 +32,90 @@ def import_data(table, filepath):
 
 def fill_characteristics():
     """Заполнение таблицы характеристик"""
-    filepath = 'data\\fill_characteristics.txt'
+    filepath = 'data\\fill_characteristics.csv'
     with open(filepath, "r", encoding="ansi") as dataf:
         data = dataf.readlines()
         for line in data:
             line = line.replace('\n','')
-            values = line.split('\t')
+            values = line.split(';')
             #print(values)
-            db.session.add(Characteristic(values[0],float(values[1]),float(values[2])))
+            db.session.add(Characteristic(values[1],float(values[2]),float(values[3])))
         db.session.commit()  
     print("Import characteristics success!")
 
 def fill_muscle_group():
     """Заполнение таблицы групп мышц"""
-    filepath = 'data\\fill_muscle_group.txt'
+    filepath = 'data\\fill_muscle_group.csv'
     with open(filepath, "r", encoding="ansi") as dataf:
         data = dataf.readlines()
         for line in data:
             line = line.replace('\n','')
-            values = line.split('\t')
+            values = line.split(';')
             #print(values)
-            db.session.add(MuscleGroup(values[0]))
+            db.session.add(MuscleGroup(values[1]))
         db.session.commit()  
     print("Import muscle group success!")
 
 def fill_exercise():
     """Заполнение упражнений и узлов дерева"""
-    filepath = 'data\\fill_exercise.txt'
+    filepath = 'data\\fill_exercise.csv'
     with open(filepath, "r", encoding="ansi") as dataf:
         data = dataf.readlines()
         nodeIdList = []
         for line in data:
             line = line.replace('\n','')
-            values = line.split('\t')
-            nodeIdList.append(int(values[0]))
+            values = line.split(';')
+            nodeIdList.append(int(values[1]))
             #print(values)
-            exercise = Exercise(values[1],values[2],int(values[3]))
+            exercise = Exercise(values[2],values[3],int(values[4]))
             db.session.add(exercise)            
         db.session.commit()  
-        
+        for i in range(1,201):
+            node = Node(i)   
+            db.session.add(node)       
+            db.session.commit() 
         exerciseId = 1
         for nodeId in nodeIdList:
-            node = Node(nodeId,int(exerciseId))
-            db.session.add(node)
+            db.session.query(Node).filter_by(id = nodeId).update({"excercise":exerciseId})
             exerciseId += 1           
         db.session.commit()  
     print("Import exercise and node success!")
     
 def fill_rulse():
     """Заполнение правил и привязки правил к узлам"""
-    filepath = 'data\\fill_rules.txt'
+    filepath = 'data\\fill_rules.csv'
     with open(filepath, "r", encoding="ansi") as dataf:
         data = dataf.readlines()     
         nodeIdList = []
         for line in data:
             line = line.replace('\n','')
-            values = line.split('\t')
+            values = line.split(';')
             #print(values)
-            nodeIdList.append(int(values[0]))
-            rule = Rule(values[1],int(values[2]),values[3],values[4])
+            nodeIdList.append(int(values[1]))
+            rule = Rule(values[2],int(values[3]),values[4],values[5])
             db.session.add(rule)
         db.session.commit()  
 
         idRule = 1
         for nodeId in nodeIdList:
-            node_rule = NodeRule(nodeId,idRule)
+            node_rule = NodeRule(nodeId,idRule)   
+            db.session.commit()
             db.session.add(node_rule)
             idRule+=1          
         db.session.commit()
     print("Import rule and node rule success!")
 
 def fill_relation():
-    filepath = 'data\\fill_relations.txt'
+    filepath = 'data\\fill_relations.csv'
     with open(filepath, "r", encoding="ansi") as dataf:
         data = dataf.readlines()    
         for line in data:
             line = line.replace('\n','')
-            values = line.split('\t')
+            values = line.split(';')
             #print(values)
             relation = Relation(int(values[0]),int(values[1]))
             db.session.add(relation)
-        db.session.commit() 
+            db.session.commit() 
 
 def update_tables():
     db.drop_tables()
