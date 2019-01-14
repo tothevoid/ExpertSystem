@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<title>Дерево решений</title>
+</head>
+<body>
+	<div>
+        {% for excercise in data %}
+        <div class="field">
+            <label class="label required">{{ excercise.name }} {{ excercise.description }}</label>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
