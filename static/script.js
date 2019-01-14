@@ -17,7 +17,18 @@ $(document).ready(function() {
         //     return;
         // }
         res = JSON.stringify($('#form').serializeControls(), null, 2)
-        console.log(res)
+        $.ajax ({
+            url: "/save_node",
+            type: "POST",
+            data: res,
+            dataType: "json",
+            contentType: 'application/json',
+            crossDomain: true,
+            contentType: "application/json; charset=utf-8",
+            success: function(data){
+                alert('success')
+            }
+        });
     });
 });
 

@@ -24,7 +24,11 @@
         <form id="form">
             <div class="field">
                 <label class="label">Родительская нода</label>
-                <select required name="parent"></select>
+                <select required name="parent">
+                    {% for node in data.nodes %}
+                    <option value="{{id}}">{{id}}</option>
+                    {% endfor %}
+                </select>
             </div>
             <hr>
             <label class="Label category">Правила:</label> 
@@ -48,7 +52,11 @@
                     </div>
                     <div class="field">
                         <label class="label required">Правый операнд</label>
-                        <select required name="rules[1][right_operand]"></select>
+                        <select required name="rules[1][right_operand]">
+                            {% for characteristic in data.characteristics %}
+                            <option value="{{characteristic.id}}">{{characteristic.name}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                     <button onclick="deleteRule()" type="button" class="delete-btn"><span>X</spn></button>
                 </div>
@@ -70,7 +78,11 @@
                 </div>
                 <div class="field">
                     <label class="label">Группа мыщц</label>
-                    <select required name="exercise[muscle_group]"></select>
+                    <select required name="exercise[muscle_group]">
+                        {% for group in data.muscle_groups %}
+                        <option value="{{group.id}}">{{group.name}}</option>
+                        {% endfor %}
+                    </select>   
                 </div>
             </div>
             <button class="btn-submit-other">Отправить</button>
