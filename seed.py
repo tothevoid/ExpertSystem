@@ -102,6 +102,18 @@ def fill_rulse():
         db.session.commit()
     print("Import rule and node rule success!")
 
+def fill_relation():
+    filepath = 'data\\fill_relations.txt'
+    with open(filepath, "r", encoding="ansi") as dataf:
+        data = dataf.readlines()    
+        for line in data:
+            line = line.replace('\n','')
+            values = line.split('\t')
+            #print(values)
+            relation = Relation(int(values[0]),int(values[1]))
+            db.session.add(relation)
+        db.session.commit() 
+
 def update_tables():
     db.drop_tables()
     db.create_tables()
@@ -111,6 +123,7 @@ def fill_db():
     fill_muscle_group()
     fill_exercise()
     fill_rulse()
+    fill_relation()
 
 db = Db(Base)
 update_tables()
