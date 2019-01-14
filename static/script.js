@@ -1,6 +1,8 @@
 $(document).ready(function() {
-    ruleBackup = document.getElementById('main-rule').cloneNode(1)
-    console.log(ruleBackup)
+    var part = document.getElementById('main-rule');
+    if (part != null)
+        ruleBackup = part.cloneNode(1);
+ 
     $('.btn-submit').click(function(event){
         event.preventDefault();
        

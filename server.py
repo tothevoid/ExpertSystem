@@ -73,7 +73,7 @@ def get_user_form():
             char_id = char_id[1]
          db.session.add(UserData(user_id, char_id, value))
       db.session.commit()
-   return 'success'
+   return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route("/save_node", methods=['POST'])
 def save_node():
@@ -81,29 +81,30 @@ def save_node():
        abort(400)
    parent = request.json['parent']
    excercise = request.json['exercise']
-   new_ex = Exercise(excercise['name'],excercise['description'],int(request.json['muscle_group']))
+   new_ex = Exercise(excercise['name'],excercise['description'],int(excercise['muscle_group']))
    db.session.add(new_ex)
    db.session.flush()
 
    all_nodes = db.session.query(Node).all()
    index = 1
-   if not all_nodes or all_nodes != []:
+   if all_nodes and all_nodes != []:
       index = max([node.id for node in all_nodes]) + 1
 
    new_node = Node(index,new_ex.id)
    db.session.add(new_node)
+   db.session.flush()
    new_relation = Relation(int(parent),index)
    db.session.add(new_relation)
    
    for key,value in request.json['rules'].items():
-      new_rule = Rule(value['explanation'],value['left_operand'],int(value['right_operand']),value['operator']) 
+      new_rule = Rule(value['explanation'],int(value['left_operand']),value['right_operand'],value['operator']) 
       db.session.add(new_rule)
       db.session.flush()
       new_node_rule = NodeRule(index, new_rule.id)
       db.session.add(new_node_rule)
 
    db.session.commit()
-   return 'success'
+   return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route("/add_node", methods=['GET'])
 def add_node():
@@ -130,8 +131,18 @@ def add_node():
 
 @app.route("/get_excercies")
 def get_excercies():
-   output = core.ESystem()
-   return render_template('excercises.html',data = output.excersises) 
+   excersises = core.ESystem().excersises
+   groups = db.session.query(MuscleGroup).all()
+ 
+   out = []
+   for group in groups:
+      item = dict()
+      name = group.name
+      item['name'] = name
+      current_exc =  list(filter(lambda x: x.muscle_group == group.id, excersises))
+      item['exercises'] = current_exc
+      out.append(item)
+   return render_template('excercises.html',data = out) 
 
 if __name__ == "__main__":
    app.run()

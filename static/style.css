@@ -151,10 +151,6 @@ form input, form select{
     margin: -.2em 0 0 .2em;
 }
 
-ul li {
-    color: red;
-}
-
 .btn-submit, .btn-submit-other{
     display: block;
     background-color: #21ba45;
@@ -190,4 +186,3 @@ ul li {
 .warning ul{
     margin: 15px 0;
 }
-

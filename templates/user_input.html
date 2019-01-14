@@ -1,42 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="script.js"></script>
-    <title>Document</title>
-</head>
-<body>
-    <div class="container">
-        <form id="form">
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <form id="form">
+        <div class="field">
+            <label class="label">Тип тренеровок</label>
+            <select required name="type">
+                <option value="1">Сила</option>
+                <option value="2">Выносливость</option>
+                <option value="3">Похудение</option>
+            </select>
+        </div>
+        {% for characteristic in characteristics %}
             <div class="field">
-                <label class="label">Тип тренеровок</label>
-                <select required name="type">
-                    <option value="1">Сила</option>
-                    <option value="2">Выносливость</option>
-                    <option value="3">Похудение</option>
-                </select>
+                <label class="label required">{{ characteristic.name }} (от {{ characteristic.min_value }} до {{ characteristic.max_value }})</label>
+                <input required name="value_{{ characteristic.id }}" type="text"/>
             </div>
-            {% for characteristic in characteristics %}
-                <div class="field">
-                    <label class="label required">{{ characteristic.name }} (от {{ characteristic.min_value }} до {{ characteristic.max_value }})</label>
-                    <input required name="value_{{ characteristic.id }}" type="text"/>
-                </div>
-            {% endfor %}
-            <div class="warning">
-                <p>Не используйте экспертную систему если у вас:</p>
-                <ul>
-                    <li>Вес больше 150</li>
-                    <li>Проблемы с позвоночником</li>
-                    <li>Что-то еще</li>
-                </ul>
-                <p>Воспользуйтесь консультацией врача</p>
-            </div>
-            <button class="btn-submit">Отправить</button>
-        </form>
-    </div>
-</body>
-</html>
+        {% endfor %}
+        <div class="warning">
+            <p>Не используйте экспертную систему если у вас:</p>
+            <ul>
+                <li>Вес больше 150</li>
+                <li>Проблемы с позвоночником</li>
+                <li>Что-то еще</li>
+            </ul>
+            <p>Воспользуйтесь консультацией врача</p>
+        </div>
+        <button class="btn-submit">Отправить</button>
+    </form>
+</div>
+{% endblock %}

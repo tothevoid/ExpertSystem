@@ -1,20 +1,125 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="style.css">
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-	<meta http-equiv="Expires" content="0" />
-	<title>Дерево решений</title>
-</head>
-<body>
-	<div>
-        {% for excercise in data %}
-        <div class="field">
-            <label class="label required">{{ excercise.name }} {{ excercise.description }}</label>
-        </div>
-        {% endfor %}
-    </div>
-</body>
-</html>
+{% extends "base.html" %}
+{% block content %}
+<style>
+	section{
+		padding: 1rem 10%;
+		font-size:1rem;
+	}
+
+	.group-info {
+		padding-bottom: 1rem;
+	}
+
+	.group-info p {
+		margin-bottom: 0;
+	}
+
+	.group-info::before {
+		content: '';
+		height: 100%;
+		width: 3px;
+		position: absolute;
+		left: -3px;
+		display: block;
+		border-right: 5px dashed #0462A9;
+	}
+
+	.group-info::after {
+		content: '';
+		height: 1.5rem;
+		width: 1.5rem;
+		border-radius: 50%;
+		border: 5px solid #0462A9;
+		background: white;
+		position: absolute;
+		left: -0.75rem;
+		top: -.25rem;
+	}
+
+	@media (max-width: 575px) {
+		html {
+			font-size: 18px;
+		}
+	}
+
+	@media (min-width: 576px) and (max-width: 767px) {
+		html {
+			font-size: 20px;
+		}
+	}
+
+	@media (min-width: 768px) and (max-width: 991px) {
+		html {
+			font-size: 24px;
+		}
+	}
+
+	@media (min-width: 992px) and (max-width: 1199px) {
+		html {
+			font-size: 28px;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		html {
+			font-size: 32px;
+		}
+	}
+
+	.group {
+		width: 100%;
+		padding-left: 1.5rem;
+		transform: translateZ(0)
+	}
+
+	.group-name {
+		font-size: 1.1rem;
+		background: #0462A9;
+		color: white;
+		padding: 5px;
+	}
+
+	.excercise-description {
+		margin-top: 5px;
+	}
+	
+	.excercise-name {
+		margin-top: .5rem;
+		font-size: 1.1rem;
+	}
+	.title {
+		font-size: 1.5rem;
+		margin-top: 0;
+		text-align: left;
+		margin-bottom: 20px;
+		text-transform: uppercase;
+		letter-spacing: 0.05rem;
+	}
+
+	.main {
+		color: #0462A9;
+		font-family: 'Roboto', sans-serif;
+		overflow-x: hidden;
+		font-size: 1rem;
+	}
+</style>
+
+<div class="main">
+	<section>
+		<h1 class="title">Персональная программа тренировок</h1>
+		<div>
+			{% for group in data %}
+			<div class="group">
+				<div class="group-info">
+					<span class="group-name">{{group.name}}</span>
+					{% for excercise in group.exercises %}
+					<p class="excercise-name">{{ excercise.name }}</p>
+					<p class="excercise-description">{{ excercise.description }}</p>
+					{% endfor %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</section>
+</main>
+{% endblock %}

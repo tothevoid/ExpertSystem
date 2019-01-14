@@ -27,19 +27,18 @@ class ESystem():
             rules = self.db.session.query(NodeRule).filter_by(node=rel.child)
             isPassed = True
             for rule in rules:
-                if not self.evaulate_rule(rule):
+                if not self.evaulate_rule(rule.rule):
                     isPassed = False
             if isPassed:
-                nodes = self.db.session.query(Node).filter_by(id=rel.parent)
+                nodes = self.db.session.query(Node).filter_by(id=rel.child)
                 for node in nodes:
-                    excercises = self.db.session.query(Exercise).filter_by(id=node.excercise)
-                    for excercise in excercises:
-                        print(excercise)
+                    excercise = self.db.session.query(Exercise).filter_by(id=node.excercise).one_or_none()
+                    if excercise != None:
                         self.excersises.append(excercise)
                 self.get_excercises(rel.child)
 
-    def evaulate_rule(self,rule):
-        rule_info = self.db.session.query(Rule).filter_by(id=rule.id)[0]
+    def evaulate_rule(self,rule_id):
+        rule_info = self.db.session.query(Rule).filter_by(id=rule_id).one_or_none()
         left_operand = self.db.session.query(UserData).filter_by(user = self.user_id, characteristic = rule_info.left_operand)[0].value
         right_operand = rule_info.right_operand
 

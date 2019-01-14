@@ -1,15 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="script.js"></script>
-	<link rel="stylesheet" href="style.css">
-	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-	<meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <title>Создание ноды</title>
-    <style>
+{% extends "base.html" %}
+{% block content %}
+<style>
         hr{
             margin: 20px 0 !important;
         }
@@ -18,78 +9,74 @@
             font-weight: 400;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <form id="form">
-            <div class="field">
-                <label class="label">Родительская нода</label>
-                <select required name="parent">
-                    {% for node in data.nodes %}
-                    <option value="{{id}}">{{id}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <hr>
-            <label class="Label category">Правила:</label> 
-            <div class="rules">
-                <div id="main-rule" class="rule">
-                    <div class="field">
-                        <label class="label required">Описание</label>
-                        <input required name="rules[1][explanation]" type="text"/>
-                    </div>
-                    <div class="field">
-                        <label class="label required">Левый операнд</label>
-                        <input required name="rules[1][left_operand]" type="text"/>
-                    </div>
-                    <div class="field">
-                        <label class="label required">Оператор</label>
-                        <select required name="rules[1][operator]">
-                            <option value="&lt;">&lt;</option>
-                            <option value="=">=</option>
-                            <option value="&gt;">&gt;</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label class="label required">Правый операнд</label>
-                        <select required name="rules[1][right_operand]">
-                            {% for characteristic in data.characteristics %}
-                            <option value="{{characteristic.id}}">{{characteristic.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <button onclick="deleteRule()" type="button" class="delete-btn"><span>X</spn></button>
-                </div>
-            </div>
-            <a onclick="addRule()">
-                <button type="button" class="add-btn"><i>+</i></button>
-                <span class="add-text">Добавить</span>
-            </a>
-            <hr>
-            <label class="Label category">Упражнение:</label>
-            <div class="field">
-                <div class="field">
-                    <label class="label required">Название</label>
-                    <input required name="exercise[name]" type="text"/>
-                </div>
+<div class="container">
+    <form id="form">
+        <div class="field">
+            <label class="label">Родительская нода</label>
+            <select required name="parent">
+                {% for node in data.nodes %}
+                <option value="{{node.id}}">{{node.id}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <hr>
+        <label class="Label category">Правила:</label> 
+        <div class="rules">
+            <div id="main-rule" class="rule">
                 <div class="field">
                     <label class="label required">Описание</label>
-                    <input required name="exercise[description]" type="text"/>
+                    <input required name="rules[1][explanation]" type="text"/>
                 </div>
                 <div class="field">
-                    <label class="label">Группа мыщц</label>
-                    <select required name="exercise[muscle_group]">
-                        {% for group in data.muscle_groups %}
-                        <option value="{{group.id}}">{{group.name}}</option>
+                    <label class="label required">Левый операнд</label>
+                    <select required name="rules[1][left_operand]">
+                        {% for characteristic in data.characteristics %}
+                        <option value="{{characteristic.id}}">{{characteristic.name}}</option>
                         {% endfor %}
-                    </select>   
+                    </select>
                 </div>
+                <div class="field">
+                    <label class="label required">Оператор</label>
+                    <select required name="rules[1][operator]">
+                        <option value="&lt;">&lt;</option>
+                        <option value="=">=</option>
+                        <option value="&gt;">&gt;</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label class="label required">Правый операнд</label>
+                    <input required name="rules[1][right_operand]" type="number" value="0"/>
+                </div>
+                <button onclick="deleteRule()" type="button" class="delete-btn"><span>X</spn></button>
             </div>
-            <button class="btn-submit-other">Отправить</button>
-        </form>
-    </div>
-</body>
-</html>
-
+        </div>
+        <a onclick="addRule()">
+            <button type="button" class="add-btn"><i>+</i></button>
+            <span class="add-text">Добавить</span>
+        </a>
+        <hr>
+        <label class="Label category">Упражнение:</label>
+        <div class="field">
+            <div class="field">
+                <label class="label required">Название</label>
+                <input required name="exercise[name]" type="text"/>
+            </div>
+            <div class="field">
+                <label class="label required">Описание</label>
+                <input required name="exercise[description]" type="text"/>
+            </div>
+            <div class="field">
+                <label class="label">Группа мыщц</label>
+                <select required name="exercise[muscle_group]">
+                    {% for group in data.muscle_groups %}
+                    <option value="{{group.id}}">{{group.name}}</option>
+                    {% endfor %}
+                </select>   
+            </div>
+        </div>
+        <button class="btn-submit-other">Отправить</button>
+    </form>
+</div>
+{% endblock %}
 
 
