@@ -7,6 +7,10 @@ from db import Db
 from characteristic import Characteristic
 from user_data import UserData
 from user import User
+from node import Node
+from characteristic import Characteristic
+from muscle_group import MuscleGroup
+from exercise import Exercise
 
 import core
 
@@ -68,10 +72,39 @@ def get_user_form():
       db.session.commit()
    return 'success'
 
+@app.route("/add_node", methods=['POST'])
+def add_node():
+    abort(400)
+    return 'success' 
+
 @app.route("/get_excercies")
 def get_excercies():
    output = core.ESystem()
    res = output.excersises
+
+@app.route("/get_data")
+def get_data():
+    def create_dict(dic):
+        for ob in dic:
+            ob.pop('_sa_instance_state', None)
+        return dic
+        ob.pop('_sa_instance_state', None)
+
+    nodes = db.session.query(Node)
+    characteristics = db.session.query(Characteristic)
+    muscle_groups = db.session.query(MuscleGroup)
+    exercises = db.session.query(Exercise)
+    node_json = create_dict([ob.__dict__ for ob in nodes])
+    characteristics_json = create_dict([ob.__dict__ for ob in characteristics])
+    muscle_groups_json = create_dict([ob.__dict__ for ob in muscle_groups])
+    exercises_json = create_dict([ob.__dict__ for ob in exercises])
+    out = dict()
+    out['nodes'] = node_json
+    out['characteristics'] = characteristics_json
+    out['muscle_groups'] = muscle_groups_json
+    out['exercises'] = exercises_json
+    return json.dumps(out)
+
 
 if __name__ == "__main__":
    app.run()
