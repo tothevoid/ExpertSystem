@@ -44,6 +44,8 @@ def get_graph():
    edges, nodes = graph_builder.get_graph(False)
    out_edges = []
    for item in edges:
+      if item.start == None or item.end == None:
+        continue
       values = dict()
       start = dict()
       start['id'] = item.start.id
