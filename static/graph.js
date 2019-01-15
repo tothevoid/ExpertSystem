@@ -29,9 +29,6 @@ function setup(){
 	// 	width = canvasX;
     createCanvas(canvasX + 2000,canvasY);
 	frameRate(60);
-	scoreElem = createDiv('Дерево решений');
-    scoreElem.position(startX-50, startY-50);
-	scoreElem.class('score');
 	getGraph();
 }
 
@@ -42,13 +39,12 @@ function draw(){
 	if (lastX == mouseX && lastY == mouseY){
 		return
 	}
-	clear()
-	if (nodes.length == 0){
+	if (nodes.length != 0){
 		nodes.forEach(function(node){
 			lastX = node.x;
 			lastY = node.y;
-			if (mouseX <= lastX + 15 && mouseX >= lastX - 15 && mouseY >= lastY + 15 && mouseY >= lastY + 15){
-				text(node.description + "\n" + node.rule, x, y);
+			if (mouseX <= lastX + 15 && mouseX >= lastX - 15 && mouseY >= lastY - 15 && mouseY <= lastY + 15){
+				document.getElementById('info').innerHTML = node.description + "\n" + node.rule;
 			} 
 		});
 	}

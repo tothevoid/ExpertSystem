@@ -4,7 +4,7 @@
     <form id="form">
         <div class="field">
             <label class="label">Тип тренеровок</label>
-            <select required name="type">
+            <select required name="value_1">
                 <option value="1">Сила</option>
                 <option value="2">Выносливость</option>
                 <option value="3">Похудение</option>
@@ -13,15 +13,16 @@
         {% for characteristic in characteristics %}
             <div class="field">
                 <label class="label required">{{ characteristic.name }} (от {{ characteristic.min_value }} до {{ characteristic.max_value }})</label>
-                <input required name="value_{{ characteristic.id }}" type="text"/>
+                <input required name="value_{{ characteristic.id }}" type="number" value="{{characteristic.min_value}}"/>
             </div>
         {% endfor %}
         <div class="warning">
             <p>Не используйте экспертную систему если у вас:</p>
             <ul>
-                <li>Вес больше 150</li>
-                <li>Проблемы с позвоночником</li>
-                <li>Что-то еще</li>
+                <li>Частота сердечных сокращений больше 70 в минуту в состоянии покоя (пульс)</li>
+                <li>Повышенное артериальное давление</li>
+                <li>Вы не питаетесь белковой пищей</li>
+                <li>Есть хронические заболевания сердца</li>
             </ul>
             <p>Воспользуйтесь консультацией врача</p>
         </div>

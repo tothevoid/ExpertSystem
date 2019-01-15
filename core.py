@@ -26,14 +26,14 @@ class ESystem():
         for rel in relations:
             rules = self.db.session.query(NodeRule).filter_by(node=rel.child)
             isPassed = True
-            isSaved = False
+            isSaved = True
             for rule in rules:
                 eval_res = self.evaulate_rule(rule.rule)
                 if eval_res == False or eval_res == None:
                     isPassed = False
-                if eval_res == None:
+                if eval_res == None or eval_res == True:
                     isSaved == True
-            if isPassed:
+            if isSaved:
                 nodes = self.db.session.query(Node).filter_by(id=rel.child)
                 for node in nodes:
                     excercise = self.db.session.query(Exercise).filter_by(id=node.excercise).one_or_none()
