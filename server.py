@@ -62,20 +62,22 @@ def get_graph():
 
 @app.route("/get_user_form", methods=['POST'])
 def get_user_form():
-   if not request.json:
-      abort(400)
-   # users = db.session.query(User).all()
-   user_data = db.session.query(UserData).filter_by(user = 1).one_or_none()
-   if user_data == None:
-      for key,value in request.json.items():
-         char_id = key.split('_')
-         if len(char_id) != 2:
+    if not request.json:
+        abort(400)
+    # users = db.session.query(User).all()
+    user_data = db.session.query(UserData).filter_by(user = 1)
+    if len(user_data) != 0:
+        db.session.delete(user_data)
+        db.session.commit()
+    for key,value in request.json.items():
+        char_id = key.split('_')
+        if len(char_id) != 2:
             continue
-         else:
+        else:
             char_id = char_id[1]
-         db.session.add(UserData(user_id, char_id, value))
-      db.session.commit()
-   return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
+        db.session.add(UserData(user_id, char_id, value))
+    db.session.commit()
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
 @app.route("/save_node", methods=['POST'])
 def save_node():
