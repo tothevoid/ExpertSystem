@@ -19,6 +19,7 @@ var totalNodes = 0;
 
 const updated_nodes = [];
 var edges;
+var nodes = [];
 var counter = 0;
 var awaitingToProcess = []
 
@@ -34,6 +35,25 @@ function setup(){
 	getGraph();
 }
 
+var lastX = 0;
+var lastY = 0;
+
+function draw(){
+	if (lastX == mouseX && lastY == mouseY){
+		return
+	}
+	clear()
+	if (nodes.length == 0){
+		nodes.forEach(function(node){
+			lastX = node.x;
+			lastY = node.y;
+			if (mouseX <= lastX + 15 && mouseX >= lastX - 15 && mouseY >= lastY + 15 && mouseY >= lastY + 15){
+				text(node.description + "\n" + node.rule, x, y);
+			} 
+		});
+	}
+}
+
 function getGraph(){
     $.ajax({
         url: "/get_graph",
@@ -44,6 +64,7 @@ function getGraph(){
 			// parts = data.split('\n')
 			// nodes = JSON.parse(parts[0])
 			// edges = JSON.parse(parts[1])
+			nodes = data.nodes;
 			drawGraph(data.nodes,data.edges);
         }
     })
