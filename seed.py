@@ -33,7 +33,7 @@ def import_data(table, filepath):
 def fill_characteristics():
     """Заполнение таблицы характеристик"""
     filepath = 'data\\fill_characteristics.csv'
-    with open(filepath, "r", encoding="ansi") as dataf:
+    with open(filepath, "r", encoding="utf-8") as dataf:
         data = dataf.readlines()
         for line in data:
             line = line.replace('\n','')
@@ -41,12 +41,12 @@ def fill_characteristics():
             #print(values)
             db.session.add(Characteristic(values[1],float(values[2]),float(values[3])))
         db.session.commit()  
-    print("Import characteristics success!")
+    print("Import characteristics successfull!")
 
 def fill_muscle_group():
     """Заполнение таблицы групп мышц"""
     filepath = 'data\\fill_muscle_group.csv'
-    with open(filepath, "r", encoding="ansi") as dataf:
+    with open(filepath, "r", encoding="utf-8") as dataf:
         data = dataf.readlines()
         for line in data:
             line = line.replace('\n','')
@@ -54,12 +54,12 @@ def fill_muscle_group():
             #print(values)
             db.session.add(MuscleGroup(values[1]))
         db.session.commit()  
-    print("Import muscle group success!")
+    print("Import muscle group successfull!")
 
 def fill_exercise():
     """Заполнение упражнений и узлов дерева"""
     filepath = 'data\\fill_exercise.csv'
-    with open(filepath, "r", encoding="ansi") as dataf:
+    with open(filepath, "r", encoding="utf-8") as dataf:
         data = dataf.readlines()
         nodeIdList = []
         for line in data:
@@ -79,12 +79,12 @@ def fill_exercise():
             db.session.query(Node).filter_by(id = nodeId).update({"excercise":exerciseId})
             exerciseId += 1           
         db.session.commit()  
-    print("Import exercise and node success!")
+    print("Import exercise and node successfull!")
     
 def fill_rulse():
     """Заполнение правил и привязки правил к узлам"""
     filepath = 'data\\fill_rules.csv'
-    with open(filepath, "r", encoding="ansi") as dataf:
+    with open(filepath, "r", encoding="utf-8") as dataf:
         data = dataf.readlines()     
         nodeIdList = []
         for line in data:
@@ -103,19 +103,26 @@ def fill_rulse():
             db.session.add(node_rule)
             idRule+=1          
         db.session.commit()
-    print("Import rule and node rule success!")
+    print("Import rule and node rule successfull!")
 
 def fill_relation():
     filepath = 'data\\fill_relations.csv'
-    with open(filepath, "r", encoding="ansi") as dataf:
+    with open(filepath, "r", encoding="utf-8") as dataf:
         data = dataf.readlines()    
         for line in data:
-            line = line.replace('\n','')
+            line = line.replace('\ufeff','').replace('\n','')
             values = line.split(';')
             #print(values)
             relation = Relation(int(values[0]),int(values[1]))
             db.session.add(relation)
             db.session.commit() 
+    print("Import relations and node success!")
+
+def fill_user():
+    user = User('','')
+    db.session.add(user)
+    db.session.commit() 
+    print("Import user successfull!")
 
 def update_tables():
     db.drop_tables()
@@ -127,6 +134,7 @@ def fill_db():
     fill_exercise()
     fill_rulse()
     fill_relation()
+    fill_user()
 
 db = Db(Base)
 update_tables()

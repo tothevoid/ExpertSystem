@@ -26,26 +26,35 @@ class ESystem():
         for rel in relations:
             rules = self.db.session.query(NodeRule).filter_by(node=rel.child)
             isPassed = True
+            isSaved = False
             for rule in rules:
-                if not self.evaulate_rule(rule.rule):
+                eval_res = self.evaulate_rule(rule.rule)
+                if eval_res == False or eval_res == None:
                     isPassed = False
+                if eval_res == None:
+                    isSaved == True
             if isPassed:
                 nodes = self.db.session.query(Node).filter_by(id=rel.child)
                 for node in nodes:
                     excercise = self.db.session.query(Exercise).filter_by(id=node.excercise).one_or_none()
                     if excercise != None:
                         self.excersises.append(excercise)
+            if isPassed and isSaved: 
                 self.get_excercises(rel.child)
 
     def evaulate_rule(self,rule_id):
         rule_info = self.db.session.query(Rule).filter_by(id=rule_id).one_or_none()
-        left_operand = self.db.session.query(UserData).filter_by(user = self.user_id, characteristic = rule_info.left_operand)[0].value
+        if rule_info == None:
+            return None
+        left_operand = self.db.session.query(UserData).filter_by(user = self.user_id, characteristic = rule_info.left_operand).one_or_none()
+        if left_operand == None:
+            return None
         right_operand = rule_info.right_operand
 
-        if rule_info.operator == '<' and int(left_operand) < int(right_operand):
+        if rule_info.operator == '<' and int(left_operand.value) < int(right_operand):
             return True
-        elif rule_info.operator == '>' and int(left_operand) > int(right_operand):
+        elif rule_info.operator == '>' and int(left_operand.value) > int(right_operand):
             return True
-        elif rule_info.operator == '=' and int(left_operand) == int(right_operand):
+        elif rule_info.operator == '=' and int(left_operand.value) == int(right_operand):
             return True
         return False
