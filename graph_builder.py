@@ -46,21 +46,25 @@ def getGraphNodeList():
     nodes = conn.execute(s1)
     graphNodeListFirst = []
     for row in nodes:
-        graphNodeListFirst.append(GraphNode(row[0]))
-        #print(row[0],row[1],row[2],"{0} {1} {2}".format(row[3],row[4],row[5]))
-    graphNodeListResult = []
-    for node in graphNodeListFirst:
-        nodeInList = False
-        nodeIndexResult = -1
-        for nodeResult in graphNodeListResult:
-            if nodeResult.id == node.id:
-                nodeInList = True
-                nodeResult.explanation += "\n"+node.explanation                
-                nodeResult.rule += "\n"+node.rule
-                break
-        if not nodeInList:
-            graphNodeListResult.append(node)
-    return graphNodeListResult
+        node = GraphNode(row[0])
+        graphNodeListFirst.append(node)
+        s4 = select([Exercise.description]).where(Node.id == row[0]).where(Exercise.id == Node.excercise)
+        descr = conn.execute(s4).first()
+        if descr != None:
+            node.description = descr[0]
+        ruleNodes = conn.execute(s4)
+        s2 = select([NodeRule]).where(NodeRule.node == row[0])
+        ruleNodes = conn.execute(s2)
+        for ruleNode in ruleNodes:
+            s3 = select([Rule.explanation, Characteristic.name, Rule.operator, Rule.right_operand]).where(Rule.id == ruleNode.rule).where(Characteristic.id == Rule.left_operand)
+            rule = conn.execute(s3).first()
+            if node.explanation == "":
+                node.explanation = rule[0]
+                node.rule = "{0} {1} {2}".format(rule[1], rule[2], rule[3])
+            else:
+                node.explanation += "\n"+ rule[0]             
+                node.rule += "\n"+ "{0} {1} {2}".format(rule[1], rule[2], rule[3])
+    return graphNodeListFirst
 
 def getGraphEdgeList(graphNodeList):
     db = Db(Base)
@@ -182,7 +186,3 @@ def get_childs_width(childs):
                 child_width+=1
         width.append(child_width)
     return width
-
-
-#nodes = getGraphNodeList()
-#edges = getGraphEdgeList(nodes)
