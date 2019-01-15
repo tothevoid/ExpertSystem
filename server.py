@@ -66,8 +66,8 @@ def get_user_form():
         abort(400)
     # users = db.session.query(User).all()
     user_data = db.session.query(UserData).filter_by(user = 1)
-    if len(user_data) != 0:
-        db.session.delete(user_data)
+    if user_data.count() != 0:
+        db.session.query(UserData).delete()
         db.session.commit()
     for key,value in request.json.items():
         char_id = key.split('_')
