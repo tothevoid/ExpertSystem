@@ -45,9 +45,9 @@ def get_graph():
         continue
       values = dict()
       start = dict()
-      start['id'] = item.start.id
+      start = item.start.__dict__
       end = dict()
-      end['id'] = item.end.id
+      end = item.end.__dict__
       values['start'] = start
       values['end'] = end
       out_edges.append(values)
